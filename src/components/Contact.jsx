@@ -16,7 +16,7 @@ const Contact = () => {
 
     try {
       // Ab hum request apne SECURE BACKEND par bhej rahe hain, Web3Forms par directly nahi.
-      const response = await fetch("http://localhost:5000/api/contact", {
+      const response = await fetch("https://fedvision-backend.onrender.com/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
