@@ -9,10 +9,16 @@ const Architecture = () => {
   const [epoch, setEpoch] = useState(1);
   const [simBox, setSimBox] = useState({ person: true, car: false });
 
+  // Cloud simulation state (YEH MISSING THA!)
+  const [syncState, setSyncState] = useState('uploading');
+
   // Simulation Effects
   useEffect(() => {
+    let progressTimer, boxTimer, syncTimer;
+
+    // Tier 2 (Edge) logic
     if (activeTab === 'edge') {
-      const progressTimer = setInterval(() => {
+      progressTimer = setInterval(() => {
         setTrainingProgress(prev => {
           if (prev >= 100) {
             setEpoch(e => e > 2 ? 1 : e + 1);
@@ -22,23 +28,51 @@ const Architecture = () => {
         });
       }, 100);
 
-      const boxTimer = setInterval(() => {
+      boxTimer = setInterval(() => {
         const r = Math.random();
         setSimBox({
           person: r < 0.6 || r >= 0.3,
           car: r < 0.6
         });
       }, 2000);
-
-      return () => {
-        clearInterval(progressTimer);
-        clearInterval(boxTimer);
-      };
     }
+
+    // Tier 3 (Cloud) logic (YEH LOOP MISSING THA!)
+    if (activeTab === 'cloud') {
+      syncTimer = setInterval(() => {
+        setSyncState(prev => prev === 'uploading' ? 'broadcasting' : 'uploading');
+      }, 3000);
+    }
+
+    // Cleanup function
+    return () => {
+      clearInterval(progressTimer);
+      clearInterval(boxTimer);
+      clearInterval(syncTimer);
+    };
   }, [activeTab]);
 
   return (
-    <section id="architecture" className="section">
+    <section id="architecture" className="section section-dark">
+      
+      {/* PURE CSS ANIMATIONS FOR TIER 3 DOTS (Gives the glow & reverse animation) */}
+      <style>
+        {`
+          @keyframes moveLeftUp { 0% { top: 100%; left: 30%; opacity: 1; } 100% { top: 0%; left: 50%; opacity: 0.2; } }
+          @keyframes moveLeftDown { 0% { top: 0%; left: 50%; opacity: 1; } 100% { top: 100%; left: 30%; opacity: 0.2; } }
+          @keyframes moveRightUp { 0% { top: 100%; left: 70%; opacity: 1; } 100% { top: 0%; left: 50%; opacity: 0.2; } }
+          @keyframes moveRightDown { 0% { top: 0%; left: 50%; opacity: 1; } 100% { top: 100%; left: 70%; opacity: 0.2; } }
+
+          .v-dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; transform: translate(-50%, -50%); }
+          
+          .dot-left-uploading { animation: moveLeftUp 1.5s infinite linear; background-color: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+          .dot-left-broadcasting { animation: moveLeftDown 1.5s infinite linear; background-color: #10b981; box-shadow: 0 0 10px #10b981; }
+          
+          .dot-right-uploading { animation: moveRightUp 1.5s infinite linear; background-color: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+          .dot-right-broadcasting { animation: moveRightDown 1.5s infinite linear; background-color: #10b981; box-shadow: 0 0 10px #10b981; }
+        `}
+      </style>
+
       <div className="container">
         <div className="section-header">
           <span className="section-subtitle">System Architecture</span>
@@ -190,7 +224,7 @@ const Architecture = () => {
             </div>
           )}
           
-          {/* TIER 3: CLOUD */}
+          {/* TIER 3: CLOUD (FIXED: State loop and CSS glowing animations added) */}
           {activeTab === 'cloud' && (
             <div className="arch-content active" id="tab-cloud">
               <div className="grid-2">
@@ -204,35 +238,49 @@ const Architecture = () => {
                   </ul>
                 </div>
                 <div className="arch-visual-col">
-                  <div className="network-diagram global-diagram">
-                    <div className="diag-node server-node active-aggregation">
-                      <span className="node-icon">👑</span>
-                      <span className="node-name">Flower FL Coordinator</span>
-                      <div className="server-status-pill">Aggregating (FedAvg)...</div>
-                    </div>
+                  <div className="network-diagram global-diagram" style={{ padding: '30px 20px', borderRadius: '12px', background: '#0B0F19' }}>
                     
-                    <svg className="conn-svg-global" viewBox="0 0 300 70" preserveAspectRatio="none">
-                      <path d="M 50,60 L 150,10" fill="none" stroke="#1e293b" strokeWidth="2" />
-                      <path d="M 250,60 L 150,10" fill="none" stroke="#1e293b" strokeWidth="2" />
-                      
-                      <circle r="4.5" fill="#3b82f6">
-                        <animateMotion dur="1.2s" repeatCount="indefinite" path="M 50,60 L 150,10" />
-                      </circle>
-                      <circle r="4.5" fill="#3b82f6">
-                        <animateMotion dur="1.2s" repeatCount="indefinite" path="M 250,60 L 150,10" />
-                      </circle>
-                    </svg>
-                    
-                    <div className="edge-nodes-row">
-                      <div className="diag-node edge-node-small">
-                        <span className="node-icon">🧠</span>
-                        <span className="node-name">Edge Box 01</span>
-                      </div>
-                      <div className="diag-node edge-node-small">
-                        <span className="node-icon">🧠</span>
-                        <span className="node-name">Edge Box N</span>
-                      </div>
+                    {/* Flower Coordinator Box with Dynamic Glow */}
+                    <div style={{
+                        padding: '12px 20px',
+                        border: `1px solid ${syncState === 'broadcasting' ? '#10b981' : '#f59e0b'}`,
+                        boxShadow: syncState === 'broadcasting' ? '0 0 20px rgba(16, 185, 129, 0.15)' : 'none',
+                        borderRadius: '8px',
+                        display: 'flex', alignItems: 'center', gap: '15px',
+                        transition: 'all 0.5s ease',
+                        background: '#0f172a',
+                        zIndex: 2,
+                        position: 'relative'
+                    }}>
+                        <span style={{ fontWeight: 'bold', color: '#fff' }}>👑 Flower FL Coordinator</span>
+                        <span style={{ 
+                          fontSize: '12px', padding: '4px 10px', borderRadius: '20px', 
+                          background: 'rgba(255,255,255,0.05)', 
+                          color: syncState === 'broadcasting' ? '#10b981' : '#3b82f6',
+                          transition: 'color 0.3s ease'
+                        }}>
+                          {syncState === 'uploading' ? 'Uploading weights (gRPC)...' : 'Broadcasting global model...'}
+                        </span>
                     </div>
+
+                    {/* V-Shape Connecting Lines and Animated Dots */}
+                    <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', width: '100%', height: '80px', marginTop: '-5px', zIndex: 1 }}>
+                        <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                          <line x1="50%" y1="0" x2="30%" y2="100%" stroke="#1e293b" strokeWidth="2" />
+                          <line x1="50%" y1="0" x2="70%" y2="100%" stroke="#1e293b" strokeWidth="2" />
+                        </svg>
+
+                        {/* Pure CSS Dynamic Dots based on syncState */}
+                        <div className={`v-dot dot-left-${syncState}`}></div>
+                        <div className={`v-dot dot-right-${syncState}`}></div>
+                    </div>
+
+                    {/* Edge Boxes */}
+                    <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', padding: '0 20px', zIndex: 2, position: 'relative' }}>
+                        <div style={{ padding: '10px 20px', background: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', color: '#cbd5e1', fontSize: '14px' }}>🧠 Edge Box 01</div>
+                        <div style={{ padding: '10px 20px', background: '#0f172a', borderRadius: '8px', border: '1px solid #1e293b', color: '#cbd5e1', fontSize: '14px' }}>🧠 Edge Box N</div>
+                    </div>
+
                   </div>
                 </div>
               </div>
