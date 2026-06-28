@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FedVision — Pitch Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Slide layout optimized for A4 Landscape print */
+        .slide {
+            width: 297mm;
+            height: 210mm;
+            padding: 18mm 22mm 14mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            page-break-after: always;
+            position: relative;
+            background: #ffffff;
+            overflow: hidden;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .slide:last-child {
+            page-break-after: auto;
+            border-bottom: none;
+        }
+
+        /* Top colorful gradient accent bar */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #0f172a, #2563eb, #3b82f6, #06b6d4, #10b981);
+        }
+
+        /* Slide header */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4mm;
+        }
+
+        .slide-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .slide-sub {
+            font-size: 14px;
+            color: #2563eb;
+            font-weight: 600;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .snum {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        /* Slide footer */
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 4mm;
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot-accent {
+            width: 6px;
+            height: 6px;
+            background-color: #2563eb;
+            border-radius: 50%;
+        }
+
+        /* ===== GRIDS & LAYOUTS ===== */
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 3mm;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .span-2 {
+            grid-column: span 2;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .card-blue {
+            background: linear-gradient(135deg, #f8fafc, #eff6ff);
+            border-color: #bfdbfe;
+        }
+
+        .card-red {
+            background: linear-gradient(135deg, #fcfcfd, #fef2f2);
+            border-color: #fca5a5;
+        }
+
+        .card-green {
+            background: linear-gradient(135deg, #f8fafc, #f0fdf4);
+            border-color: #bbf7d0;
+        }
+
+        .card-dark {
+            background: #0f172a;
+            color: #f8fafc;
+            border: none;
+        }
+
+        .ctitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-blue .ctitle { color: #1d4ed8; }
+        .card-red .ctitle { color: #b91c1c; }
+        .card-green .ctitle { color: #15803d; }
+        .card-dark .ctitle { color: #38bdf8; }
+
+        .card p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .card-dark p {
+            color: #cbd5e1;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card li {
+            font-size: 12.5px;
+            line-height: 1.65;
+            padding-left: 18px;
+            position: relative;
+            margin-bottom: 4px;
+            color: #334155;
+        }
+
+        .card-dark li {
+            color: #cbd5e1;
+        }
+
+        .card li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .card-red li::before { color: #ef4444; }
+        .card-green li::before { color: #22c55e; }
+        .card-dark li::before { color: #38bdf8; }
+
+        /* ===== STAT BADGES ===== */
+        .stats-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+        }
+
+        .stat-card .val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: #2563eb;
+            line-height: 1.1;
+        }
+
+        .stat-card .lbl {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #64748b;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .stat-card.highlighted {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border: none;
+        }
+
+        .stat-card.highlighted .val { color: #ffffff; }
+        .stat-card.highlighted .lbl { color: rgba(255,255,255,0.8); }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+            margin-top: 4px;
+        }
+
+        th {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 8px 12px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 7px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        .bad-text {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .good-text {
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        /* ===== TAGS ===== */
+        .tag {
+            display: inline-block;
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #dbeafe;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin: 2px;
+        }
+
+        .tag-g {
+            background: #f0fdf4;
+            color: #166534;
+            border-color: #dcfce7;
+        }
+
+        .tag-r {
+            background: #fef2f2;
+            color: #991b1b;
+            border-color: #fee2e2;
+        }
+
+        /* ===== DIAGRAMS ===== */
+        .diagram-container {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: #cbd5e1;
+        }
+
+        .diag-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .diag-box {
+            background: #1e293b;
+            border: 1.5px solid #38bdf8;
+            border-radius: 8px;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .diag-box.server {
+            border-color: #f59e0b;
+        }
+
+        .diag-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .diag-arrow-line {
+            width: 2px;
+            height: 20px;
+            background: #38bdf8;
+        }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .roadmap-step {
+            flex: 1;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .roadmap-step.active {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .roadmap-step.active .step-num {
+            background: #22c55e;
+            color: #ffffff;
+        }
+
+        .roadmap-step .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 6px;
+        }
+
+        .roadmap-step .step-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .roadmap-step.active .step-title {
+            color: #166534;
+        }
+
+        .roadmap-step .step-desc {
+            font-size: 10px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* ===== TITLE SLIDE ===== */
+        .cover-slide {
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at 10% 20%, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            border: none;
+            padding: 0;
+        }
+
+        .cover-slide::before {
+            display: none;
+        }
+
+        .cover-card {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 36px 48px;
+            max-width: 900px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .cover-badge {
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-block;
+        }
+
+        .cover-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -1px;
+            margin: 15px 0 10px;
+        }
+
+        .cover-subtitle {
+            font-size: 16px;
+            color: #38bdf8;
+            font-weight: 500;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .cover-divider {
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #38bdf8, #10b981);
+            border-radius: 2px;
+            margin: 0 auto 24px;
+        }
+
+        .cover-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 12.5px;
+            color: #94a3b8;
+        }
+
+        .cover-meta span b {
+            color: #f1f5f9;
+        }
+
+        /* ===== CANVAS ===== */
+        .canvas {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            gap: 2px;
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .ccell {
+            background: #ffffff;
+            padding: 12px 14px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .ccell .ct {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 3px;
+        }
+
+        .cspan2 {
+            grid-column: span 2;
+        }
+
+        /* ===== ALERTS & CALLOUTS ===== */
+        .alert-callout {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: #1e3a8a;
+            margin-top: 6px;
+        }
+
+        .alert-callout.alert-red {
+            background: #fef2f2;
+            border-left-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .alert-callout.alert-green {
+            background: #f0fdf4;
+            border-left-color: #22c55e;
+            color: #166534;
+        }
+
+        .highlight-text {
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        /* ===== PRINT STYLE ADJUSTMENTS ===== */
+        @media print {
+            body {
+                background: #ffffff;
+            }
+
+            .slide {
+                width: 297mm !important;
+                height: 210mm !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                border-bottom: none !important;
+                box-shadow: none !important;
+            }
+
+            .cover-slide {
+                background: #0f172a !important;
+            }
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SLIDE 0: TITLE SLIDE (COVER) -->
+    <div class="slide cover-slide">
+        <div class="cover-card">
+            <span class="cover-badge">DeepTech Startup Pitch</span>
+            <h1 class="cover-title">FedVision</h1>
+            <p class="cover-subtitle">Privacy-Preserving AI Surveillance Platform<br>for 5G-Connected Smart Camera Networks</p>
+            <div class="cover-divider"></div>
+            <div class="cover-meta" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 30px; text-align: left; max-width: 820px; margin: 0 auto; font-size: 12.5px; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 14px; line-height: 1.5;">
+                <span><b>Founder:</b> Bhoopendra Singh Bhadauria</span>
+                <span><b>Category:</b> DeepTech — Student Innovator</span>
+                <span><b>Institute:</b> Central University of Haryana, Mahendragarh</span>
+                <span><b>Theme:</b> Artificial Intelligence & Edge Computing for 5G</span>
+                <span><b>Contact:</b> bhoopendrasinghbhadauria5@gmail.com</span>
+                <span><b>Advisor:</b> Dr. Sushil Kumar (Central University of Haryana)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 1: OVERVIEW -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">01. Overview</span>
+                <h2 class="slide-title">Who We Are & What We've Built</h2>
+            </div>
+            <span class="snum">Slide 01</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card card-blue" style="display: flex; flex-direction: column; justify-content: center;">
+                    <div class="ctitle">🎯 The Hook</div>
+                    <p style="font-size: 16px; font-weight: 700; color: #1e40af; line-height: 1.5; margin-bottom: 8px;">
+                        "What if every security camera in India could learn from every other camera — <span style="color: #10b981;">without sharing a single frame of video?</span>"
+                    </p>
+                    <p>We have engineered a system that makes this possible today. Upgrading legacy CCTV cameras to private, intelligent networks without cloud dependencies.</p>
+                </div>
+                <div class="card">
+                    <div class="ctitle">👤 Solo Founder & MVP Status</div>
+                    <ul style="font-size: 12px; margin-top: 2px;">
+                        <li><b>Solo Founder:</b> B.Tech CSE (AI&ML) Student Researcher at Central University of Haryana.</li>
+                        <li><b>Working MVP:</b> 11 verified Python modules (~660 lines of code) implementing a complete, automated pipeline.</li>
+                        <li><b>Empirical Validation:</b> 167 MB trained global model validated in a multi-client gRPC federated setting.</li>
+                        <li><b>1-Click Orchestration:</b> Fully automated pipeline running video frame capture, annotation, training, and aggregation in a single loop.</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 14px;">
+                <span class="tag">PyTorch</span>
+                <span class="tag">Faster R-CNN</span>
+                <span class="tag">Federated Learning</span>
+                <span class="tag">5G URLLC</span>
+                <span class="tag">Edge AI</span>
+                <span class="tag-g">Flower Framework</span>
+                <span class="tag-g">OpenCV</span>
+                <span class="tag-g">gRPC</span>
+                <span class="tag-r">DPDP Act Compliant</span>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: THE PROBLEM -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">02. Pain Points</span>
+                <h2 class="slide-title">The Cloud Surveillance Bottlenecks</h2>
+            </div>
+            <span class="snum">Slide 02</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card card-red">
+                    <div class="ctitle">🚨 1. Passive Monitoring & Guard Fatigue</div>
+                    <p style="margin-bottom: 6px; font-weight: 600;">Traditional setups are forensic, not proactive:</p>
+                    <ul style="font-size: 11.5px;">
+                        <li>Guards watching dozens of CCTV screens experience a 95% drop in attention span within 20 minutes, leading to missed real-time anomalies.</li>
+                        <li>Attempts to route feeds to Cloud AI to automate monitoring fail due to latency and bandwidth constraints.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="ctitle">💻 2. Bandwidth & Latency Trap</div>
+                    <p style="margin-bottom: 6px; font-weight: 600;">Streaming raw video to the cloud is unsustainable:</p>
+                    <ul style="font-size: 11.5px;">
+                        <li>Streaming 24/7 high-definition raw feeds from dozens of cameras exhausts network uplinks and incurs massive internet hosting bills.</li>
+                        <li>Network latency (~200ms) prevents instantaneous alerts needed for active safety hazards.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid-2" style="margin-top: 12px;">
+                <div class="card">
+                    <div class="ctitle">⚖️ 3. Privacy & Legal Violations (DPDP)</div>
+                    <p style="margin-bottom: 6px; font-weight: 600;">Data privacy laws make centralized storage a liability:</p>
+                    <ul style="font-size: 11.5px;">
+                        <li>Under India's new <span class="highlight-text" style="color: #b91c1c;">Digital Personal Data Protection (DPDP) Act, 2023</span>, streaming and storing public surveillance footage centrally on external servers invites strict penalties (fines up to ₹250 Crore).</li>
+                    </ul>
+                </div>
+                <div class="card card-red">
+                    <div class="ctitle">💰 4. High Infrastructure Capital (CapEx)</div>
+                    <p style="margin-bottom: 6px; font-weight: 600;">Upgrading hardware is financially restrictive:</p>
+                    <ul style="font-size: 11.5px;">
+                        <li>Tearing down existing "dumb" analog or IP camera networks to install proprietary "AI Smart Cameras" is extremely expensive and economically non-viable for most institutions.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: THE SOLUTION -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">03. Solution</span>
+                <h2 class="slide-title">Proposed Solution: Edge AI + Federated Learning</h2>
+            </div>
+            <span class="snum">Slide 03</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card card-green" style="display: flex; flex-direction: column; justify-content: center;">
+                    <div class="ctitle">⚡ What FedVision Does</div>
+                    <ul style="font-size: 12.5px; line-height: 1.5;">
+                        <li><b>Edge Inference:</b> Object detection (Faster R-CNN, 41M params) runs locally on a retrofit edge gateway box connected to existing cameras.</li>
+                        <li><b>Active Learning:</b> Automatically selects key training frames (confidence: 50–75%) to minimize local storage.</li>
+                        <li><b>Privacy-Preserving:</b> Video stays local and is permanently deleted after processing. Only mathematical weight updates (~10MB) are shared over 5G.</li>
+                        <li><b>Flower Aggregation:</b> Central server runs FedAvg to average weights and construct a "Super Model".</li>
+                        <li><b>Continuous Smart Updates:</b> The global super-model is pushed back to edge cameras, making the entire network instantly smarter.</li>
+                    </ul>
+                </div>
+                
+                <div class="diagram-container">
+                    <div style="font-size: 12px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">DECENTRALIZED WEIGHT SYNC OVER 5G</div>
+                    <div class="diag-row">
+                        <div class="diag-box">📹 Edge Box 1<br>(Local Video)</div>
+                        <div class="diag-box">📹 Edge Box 2<br>(Local Video)</div>
+                        <div class="diag-box">📹 Edge Box N<br>(Local Video)</div>
+                    </div>
+                    <div class="diag-row" style="gap: 60px;">
+                        <div class="diag-arrow">
+                            <span style="font-size: 9px;">Weights (~10 MB)</span>
+                            <div class="diag-arrow-line" style="height: 15px;"></div>
+                        </div>
+                        <div style="font-size: 10px; color: #ef4444; font-weight: 700;">🚫 NO RAW VIDEO TRANSMITTED</div>
+                        <div class="diag-arrow">
+                            <span style="font-size: 9px;">Weights (~10 MB)</span>
+                            <div class="diag-arrow-line" style="height: 15px;"></div>
+                        </div>
+                    </div>
+                    <div class="diag-box server" style="min-width: 220px;">🌐 Central FL Server (Flower FedAvg Strategy)</div>
+                    <div class="diag-arrow" style="margin-top: -6px;">
+                        <div class="diag-arrow-line" style="height: 12px; background: #22c55e;"></div>
+                        <span style="color: #22c55e; font-size: 9px;">Broadcast Aggregated Model to All Gateways</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: TECHNICAL EXECUTION -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">04. Tech Execution</span>
+                <h2 class="slide-title">Technical Execution & Validation Metrics</h2>
+            </div>
+            <span class="snum">Slide 04</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card card-dark" style="display: flex; flex-direction: column; justify-content: center;">
+                    <div class="ctitle">🛠️ Developed Codebase & Pipeline</div>
+                    <p style="margin-bottom: 6px;">We have built a fully functional end-to-end Python prototype containing:</p>
+                    <ul style="font-size: 11.5px; line-height: 1.5;">
+                        <li><b>AI Engine:</b> PyTorch Faster R-CNN (ResNet-50 backbone with FPN neck, 41M parameters). We freeze backbone parameters for fast edge fine-tuning.</li>
+                        <li><b>Federated Sync:</b> Flower framework (gRPC, SSL disabled on localhost, ready for TLS) with custom <b>SaveModelStrategy</b> to preserve global model state across runs.</li>
+                        <li><b>Local Data Generator:</b> Self-supervised frame extraction with pseudo-labeling using high confidence threshold (threshold >= 0.8) to prevent label noise.</li>
+                        <li><b>Double-Buffered Hot Swapping:</b> Dual-thread execution allows live 24/7 inference in Thread 1 while training in Thread 2. Hot-swaps the model in &lt;50ms with <b>zero surveillance downtime.</b></li>
+                    </ul>
+                </div>
+
+                <div class="card" style="padding: 12px 18px;">
+                    <div class="ctitle">📊 Empirical Validation Results (mAP Metrics)</div>
+                    <p style="margin-bottom: 4px; font-size: 11.5px;">We integrated a custom tensor-based evaluation engine to measure validation metrics over 3 rounds:</p>
+                    <table style="font-size: 11.5px;">
+                        <thead>
+                            <tr>
+                                <th>FL Round</th>
+                                <th>mAP @ 0.50 IoU</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>Training Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Round 0 (Initial)</td>
+                                <td>94.88%</td>
+                                <td>85.49%</td>
+                                <td>94.37%</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Round 1</td>
+                                <td>95.76%</td>
+                                <td>84.94%</td>
+                                <td>93.07%</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Round 2</td>
+                                <td>95.00%</td>
+                                <td>93.45%</td>
+                                <td>92.64%</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td><b>Round 3 (Final)</b></td>
+                                <td class="good-text">94.75%</td>
+                                <td class="good-text">92.67% (+7.18%)</td>
+                                <td class="good-text">93.07%</td>
+                                <td><b>410.41s (Optimized)</b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size: 10px; margin-top: 6px; color: #64748b; font-style: italic; line-height: 1.3;">
+                        <b>Runtime Optimization:</b> The compilation speed improved by <b>48%</b> in Run 2 (from 790s to 410s) due to PyTorch graph caching, VRAM memory pooling, and CUDA kernel caching.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: MARKET -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">05. Market</span>
+                <h2 class="slide-title">Market Size & Target Verticals</h2>
+            </div>
+            <span class="snum">Slide 05</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="val">$7.5B</div>
+                    <div class="lbl">India Surveillance (2025)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="val">$1.05B</div>
+                    <div class="lbl">India Edge AI (2025)</div>
+                </div>
+                <div class="stat-card highlighted">
+                    <div class="val">$27.0B</div>
+                    <div class="lbl">Total Market by 2034</div>
+                </div>
+                <div class="stat-card">
+                    <div class="val">28.1%</div>
+                    <div class="lbl">Edge AI CAGR</div>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="ctitle">🌍 TAM & SAM</div>
+                    <p style="margin-bottom: 4px;"><b>TAM (Total Addressable Market):</b> India Video Surveillance + Edge AI: $8.5 Billion (2025) → $27 Billion by 2034.</p>
+                    <p><b>SAM (Serviceable Available Market):</b> AI surveillance seeking privacy compliance in public and B2B sectors: ~$2 Billion (growing rapidly with DPDP Act enforcement).</p>
+                </div>
+                <div class="card card-blue">
+                    <div class="ctitle">🏹 Target Segments (SOM)</div>
+                    <ul style="font-size: 11.5px; line-height: 1.45;">
+                        <li>🏫 **1,000+ Universities & Colleges:** Privacy-first student safety, automated attendance, and zone monitoring.</li>
+                        <li>Smart Cities (100+), Hospitals (75,000+), Factories (50,000+), Gated Societies (2L+).</li>
+                        <li><b>Focus:</b> Sites with 20-100+ cameras needing DPDP-compliant, cost-effective AI.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: TECHNOLOGY ROADMAP -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">06. Tech Innovation</span>
+                <h2 class="slide-title">Technology Innovation & Roadmap</h2>
+            </div>
+            <span class="snum">Slide 06</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card" style="padding: 12px 18px;">
+                    <div class="ctitle">🔬 Development State & TRL</div>
+                    <ul style="font-size: 12px;">
+                        <li><b>Stage:</b> Working Lab-validated Prototype (MVP).</li>
+                        <li><b>TRL Level:</b> TRL 4-5 (Validated on 5G Core/testbed).</li>
+                        <li><b>Code:</b> 11 verified Python modules (~660 lines of code).</li>
+                        <li><b>Model:</b> 167.5 MB Faster R-CNN (ResNet-50 backbone) global model.</li>
+                        <li><b>Uniqueness:</b> Video-to-Federated pipeline with self-supervised pseudo-labeling.</li>
+                    </ul>
+                </div>
+                <div class="card card-blue" style="padding: 12px 18px;">
+                    <div class="ctitle">🧬 Core Innovations (IP)</div>
+                    <ul style="font-size: 11.5px; line-height: 1.45;">
+                        <li><b>Double-Buffered Hot Swapping:</b> Live inference continues while local training occurs, hot-swapping parameters in &lt;50ms.</li>
+                        <li><b>Active Learning:</b> Uncertainty filtering (saving frames where confidence is 50-75%) avoids storage clutter.</li>
+                        <li><b>Custom Memory Persistence Strategy:</b> Strategy extends FedAvg to persistently save global weights and resume sessions.</li>
+                    </ul>
+                </div>
+            </div>
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; color: #0f172a; margin-top: 10px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.8px;">📍 Product Development Roadmap</h3>
+            <div class="roadmap-container">
+                <div class="roadmap-step active">
+                    <div class="step-num">1</div>
+                    <div class="step-title">Phase 1 ✅</div>
+                    <div class="step-desc">Core FL Pipeline, Person detection, auto-annotation.</div>
+                </div>
+                <div class="roadmap-step active">
+                    <div class="step-num">2</div>
+                    <div class="step-title">Phase 2 ⏳</div>
+                    <div class="step-desc">5G Lab integration, MEC and base station pilot.</div>
+                </div>
+                <div class="roadmap-step">
+                    <div class="step-num">3</div>
+                    <div class="step-title">Phase 3</div>
+                    <div class="step-desc">Multi-class objects, vehicle tracking (ByteTrack).</div>
+                </div>
+                <div class="roadmap-step">
+                    <div class="step-num">4</div>
+                    <div class="step-title">Phase 4</div>
+                    <div class="step-desc">Real-time Dashboard UI & instant zone alert engine.</div>
+                </div>
+                <div class="roadmap-step">
+                    <div class="step-num">5</div>
+                    <div class="step-title">Phase 5</div>
+                    <div class="step-desc">Hierarchical scaling, city-scale multi-tier FL.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: COMPETITIVE LANDSCAPE -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">07. Competition</span>
+                <h2 class="slide-title">Competitive Landscape & Moat</h2>
+            </div>
+            <span class="snum">Slide 07</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="ctitle">⚔️ Competitive Matrix</div>
+                    <table style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Cloud AI</th>
+                                <th>Legacy CCTV</th>
+                                <th>FedVision</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Video Privacy</td>
+                                <td class="bad-text">❌ Cloud Stream</td>
+                                <td class="bad-text">❌ NVR storage</td>
+                                <td class="good-text">✅ Local Only</td>
+                            </tr>
+                            <tr>
+                                <td>Self-learning</td>
+                                <td class="bad-text">❌ Static Model</td>
+                                <td class="bad-text">❌ No AI</td>
+                                <td class="good-text">✅ Daily updates</td>
+                            </tr>
+                            <tr>
+                                <td>Works Offline</td>
+                                <td class="bad-text">❌ No</td>
+                                <td class="good-text">✅ Yes</td>
+                                <td class="good-text">✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>5-Year Cost (100 cams)</td>
+                                <td class="bad-text">₹1.8 Crore+</td>
+                                <td class="good-text">₹5 – 10 Lakh</td>
+                                <td class="good-text">₹12 – 18 Lakh</td>
+                            </tr>
+                            <tr>
+                                <td>DPDP Compliant</td>
+                                <td class="bad-text">❌ Violates</td>
+                                <td class="bad-text">⚠️ High risk</td>
+                                <td class="good-text">✅ Compliant</td>
+                            </tr>
+                            <tr>
+                                <td>Cross-cam Sync</td>
+                                <td class="bad-text">❌ No</td>
+                                <td class="bad-text">❌ No</td>
+                                <td class="good-text">✅ Federated</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card card-blue">
+                    <div class="ctitle">🏰 Our Moat (Barriers to Entry)</div>
+                    <ul style="font-size: 11.5px; line-height: 1.5; margin-top: 4px;">
+                        <li><b>Technical Complexity:</b> Integrating deep learning training (Faster R-CNN), active learning, and gRPC weight communication in an edge environment takes months of specialized engineering to duplicate.</li>
+                        <li><b>First-Mover Edge:</b> First working prototype combining Flower Federated Learning, production Computer Vision, and 5G edge networks.</li>
+                        <li><b>Deployment IP:</b> Continuous learning architecture with frozen-backbone training prevents model corruption (Client Drift).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: LEAN CANVAS -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">08. Business Model</span>
+                <h2 class="slide-title">Lean Canvas</h2>
+            </div>
+            <span class="snum">Slide 08</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="canvas">
+                <div class="ccell">
+                    <div class="ct">Problem</div>
+                    1. Guard fatigue missing anomalies.<br>
+                    2. Cloud AI bandwidth trap & latency.<br>
+                    3. DPDP Act privacy liability.<br>
+                    4. High cost to replace legacy cameras.
+                </div>
+                <div class="ccell">
+                    <div class="ct">Solution</div>
+                    Edge AI (Faster R-CNN) at each camera. Only weights (~10 MB) shared via 5G FL. Zero raw video leaves the local network.
+                </div>
+                <div class="ccell">
+                    <div class="ct">Unique Value Prop</div>
+                    <span style="color: #2563eb; font-weight: 700;">"Self-learning surveillance: 90% cheaper, 100% private, and smarter daily — with zero cloud dependencies."</span>
+                </div>
+                <div class="ccell">
+                    <div class="ct">Unfair Advantage</div>
+                    Working prototype (TRL 4-5) validated on 5G network. Double-buffered hot-swapping and active learning algorithms.
+                </div>
+                <div class="ccell">
+                    <div class="ct">Customer Segments</div>
+                    • Universities (1000+)<br>
+                    • Smart Cities (100+)<br>
+                    • Hospitals (75K+)<br>
+                    • Industrial Factories
+                </div>
+                <div class="ccell">
+                    <div class="ct">Key Metrics</div>
+                    • Bandwidth saved (%)<br>
+                    • Inference FPS<br>
+                    • Local model mAP<br>
+                    • Active nodes count
+                </div>
+                <div class="ccell">
+                    <div class="ct">Channels</div>
+                    • Direct B2B sales<br>
+                    • Govt tenders (GeM)<br>
+                    • CCTV system integrators<br>
+                    • 5G lab partnerships
+                </div>
+                <div class="ccell">
+                    <div class="ct">Cost Structure</div>
+                    • Edge GPU hardware kits<br>
+                    • Software development & gRPC servers<br>
+                    • 5G data plans<br>
+                    • Installation overheads
+                </div>
+                <div class="ccell cspan2">
+                    <div class="ct">Revenue Streams</div>
+                    <b>1. Hardware Kit:</b> ₹50K - 1L / zone (one-time CapEx)<br>
+                    <b>2. Software License:</b> ₹5 - 10L / site (one-time license)<br>
+                    <b>3. AMC:</b> ₹1.5 - 2L / year (recurring support & updates)
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: BUSINESS MODEL & TCO -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">09. Unit Economics</span>
+                <h2 class="slide-title">Revenue Streams & Cost Comparison</h2>
+            </div>
+            <span class="snum">Slide 09</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card card-green" style="padding: 12px 18px;">
+                    <div class="ctitle">💰 Revenue Model & Unit Economics</div>
+                    <table style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th>Stream</th>
+                                <th>Model</th>
+                                <th>Pricing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Edge Hardware Kit</b></td>
+                                <td>One-time CapEx</td>
+                                <td>₹50K – 1 Lakh / zone</td>
+                            </tr>
+                            <tr>
+                                <td><b>Site Software License</b></td>
+                                <td>Per-site license</td>
+                                <td>₹5 – 10 Lakh</td>
+                            </tr>
+                            <tr>
+                                <td><b>AMC (Support & SaaS)</b></td>
+                                <td>Recurring OpEx</td>
+                                <td>₹1.5 – 2 Lakh / year</td>
+                            </tr>
+                            <tr>
+                                <td><b>Custom AI Modules</b></td>
+                                <td>Per-vertical add-on</td>
+                                <td>₹2 – 5 Lakh</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="padding: 12px 18px;">
+                    <div class="ctitle">💰 5-Year Total Cost of Ownership (100 Cameras)</div>
+                    <table style="font-size: 10.5px;">
+                        <thead>
+                            <tr>
+                                <th>Cost Component</th>
+                                <th>Cloud AI System</th>
+                                <th>FedVision</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cloud GPU training</td>
+                                <td class="bad-text">₹2 – 5 Lakh/month</td>
+                                <td class="good-text">₹0</td>
+                            </tr>
+                            <tr>
+                                <td>Cloud video storage</td>
+                                <td class="bad-text">₹50K – 1L/month</td>
+                                <td class="good-text">₹0</td>
+                            </tr>
+                            <tr>
+                                <td>Dedicated Bandwidth</td>
+                                <td class="bad-text">₹50K/month</td>
+                                <td class="good-text">Standard 5G SIM plan</td>
+                            </tr>
+                            <tr style="border-top: 1.5px solid #e2e8f0; background: #f8fafc; font-weight: 700;">
+                                <td>5-Year Total Cost</td>
+                                <td class="bad-text">₹1.8 – 3.6 Crore</td>
+                                <td class="good-text">₹12 – 18 Lakh</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="stats-container" style="margin-top: 12px; margin-bottom: 0;">
+                <div class="stat-card" style="padding: 10px 4px;">
+                    <div class="val" style="color: #ef4444; font-size: 26px;">₹1.8 Crore+</div>
+                    <div class="lbl">Cloud AI Cost</div>
+                </div>
+                <div class="stat-card highlighted" style="padding: 10px 4px;">
+                    <div class="val" style="font-size: 26px;">₹15 Lakh</div>
+                    <div class="lbl">FedVision Cost</div>
+                </div>
+                <div class="stat-card" style="padding: 10px 4px;">
+                    <div class="val" style="color: #10b981; font-size: 26px;">90% Saving</div>
+                    <div class="lbl">TCO Reduction</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: TEAM -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">10. Founder & Advisor</span>
+                <h2 class="slide-title">The People Behind FedVision</h2>
+            </div>
+            <span class="snum">Slide 10</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card card-blue" style="padding: 20px;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="min-width: 130px; text-align: center;">
+                            <div style="width: 70px; height: 70px; border-radius: 50%; background: #2563eb; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff;">
+                                👨‍💻
+                            </div>
+                            <b style="font-size: 13.5px; color: #0f172a; display: block; line-height: 1.3;">Bhoopendra S. Bhadauria</b>
+                            <p style="font-size: 10.5px; color: #2563eb; font-weight: 700; margin-top: 2px;">Solo Founder & CEO</p>
+                        </div>
+                        <div>
+                            <div class="ctitle">Background & Expertise</div>
+                            <ul style="font-size: 11.5px; line-height: 1.5;">
+                                <li>Undergraduate (UG) Student Researcher, Central University of Haryana (AI & ML focus).</li>
+                                <li>Built the entire end-to-end Python federated computer vision pipeline.</li>
+                                <li><b>Industry Credentials:</b> Completed ethical hacking training at CDAC Noida. VS Code extensions creator (GIFForge, Codesage) with active developer installs.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="min-width: 130px; text-align: center;">
+                            <div style="width: 70px; height: 70px; border-radius: 50%; background: #475569; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff;">
+                                🎓
+                            </div>
+                            <b style="font-size: 13.5px; color: #0f172a; display: block; line-height: 1.3;">Dr. Sushil Kumar</b>
+                            <p style="font-size: 10.5px; color: #64748b; font-weight: 700; margin-top: 2px;">Academic Advisor</p>
+                        </div>
+                        <div>
+                            <div class="ctitle">Guidance & Support</div>
+                            <ul style="font-size: 11.5px; line-height: 1.5;">
+                                <li>Assistant Professor, Central University of Haryana.</li>
+                                <li>Directing academic research in 5G wireless systems and Deep Learning.</li>
+                                <li>Providing full access to the university's <b>5G Use Case Laboratory</b> infrastructure for prototype validation, gNodeB routing, and physical multi-client deployments.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <div class="footer-left"><div class="dot-accent"></div>FedVision</div>
+            <div>Bhoopendra Singh Bhadauria — Solo Founder</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 11: CONCLUSION & ASK -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title-group">
+                <span class="slide-sub">11. Closing Pitch</span>
+                <h2 class="slide-title">Conclusion & Strategic Ask</h2>
+            </div>
+            <span class="snum">Slide 11</span>
+        </div>
+
+        <div class="slide-content">
+            <div class="grid-2">
+                <div class="card card-blue" style="display: flex; flex-direction: column; justify-content: center; padding: 22px;">
+                    <div class="ctitle" style="font-size: 12px; margin-bottom: 6px; color: #2563eb;">🎯 The Strategic Vision</div>
+                    <p style="font-size: 13px; line-height: 1.55; color: #334155; margin-bottom: 12px; font-style: italic;">
+                        "India is deploying millions of cameras under the Smart City Mission. The current cloud approach is a privacy disaster and economic black hole. I believe AI surveillance can be <b>private, affordable, and self-improving</b> — and I've built the working proof."
+                    </p>
+                    <div style="border-top: 1.5px dashed #bfdbfe; padding-top: 10px; text-align: center;">
+                        <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; color: #1e3a8a;">
+                            "Making surveillance smarter — not scarier."
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card card-green" style="display: flex; flex-direction: column; justify-content: center; padding: 20px;">
+                    <div class="ctitle">💡 Strategic Ask: Transitioning MVP to Product</div>
+                    <ul style="font-size: 11px; line-height: 1.5;">
+                        <li><b>Hardware Procurement:</b> NVIDIA Jetson Orin modules & industrial 5G routers for local edge box gateways.</li>
+                        <li><b>Weatherproof Enclosures:</b> Designing IP66/IP67 protective casings for outdoor retrofitting.</li>
+                        <li><b>Scale Field Trials:</b> Expanding from localhost simulations to a physical 5-camera campus pilot network using Central University's 5G Core.</li>
+                        <li><b>VMS Integration:</b> Developing secure API layers to interface with legacy VMS control rooms.</li>
+                        <li><b>BIS Certification & IP:</b> Filing patents for core innovations (Hot-Swapping, Active Learning).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer" style="border-top: 1px solid #e2e8f0; padding-top: 4mm;">
+            <div class="footer-left" style="font-size: 12.5px; font-weight: 700; color: #0f172a;">Bhoopendra Singh Bhadauria</div>
+            <div style="font-size: 12.5px; font-weight: 600; color: #2563eb;">bhoopendrasinghbhadauria5@gmail.com | +91 9294824187</div>
+        </div>
+    </div>
+
+</body>
+
+</html>
