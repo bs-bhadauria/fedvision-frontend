@@ -8,6 +8,7 @@ const landingLinks = [
     href: '#architecture',
     page: 'landing'
   },
+  { label: 'Use Cases', target: 'use-cases', href: '#use-cases', page: 'landing' },
   { label: 'Economics', target: 'calculator', href: '#calculator', page: 'landing' },
   { label: 'Validation', target: 'metrics', href: '#metrics', page: 'landing' },
   { label: 'Contact', target: 'contact', href: '#contact', page: 'landing' }

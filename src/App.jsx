@@ -4,8 +4,10 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import Architecture from './components/Architecture';
+import UseCases from './components/UseCases';
 import Gallery from './components/Gallery';
 import Demonstration from './components/Demonstration';
+import PrivacySplitViewer from './components/PrivacySplitViewer';
 import Calculator from './components/Calculator';
 import Metrics from './components/Metrics';
 import Contact from './components/Contact';
@@ -123,8 +125,10 @@ function App() {
               <Hero />
               <Features />
               <Architecture />
+              <UseCases />
               <Gallery />
               <Demonstration />
+              <PrivacySplitViewer />
               <Calculator />
               <Metrics />
               <Contact />
