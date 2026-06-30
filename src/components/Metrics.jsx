@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Cpu, ShieldCheck, Zap, BarChart3, HardDrive, ArrowUpRight, Play, Pause, RotateCcw, BatteryCharging } from 'lucide-react';
+import { Activity, Cpu, ShieldCheck, Zap, BarChart3, HardDrive, ArrowUpRight, Play, Pause, RotateCcw, BatteryCharging, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const benchmarkRoundsData = [
   { round: 0, label: 'Round 0 (Initial)', mAP: 99.71, precision: 91.24, recall: 99.13, time: 1.05, status: 'Initial Baseline' },
@@ -18,7 +18,8 @@ const benchmarkRoundsData = [
 
 const hardwareTelemetry = [
   { metric: 'Bandwidth Saved', value: '99.96%', desc: '10MB weights vs continuous 4K video stream', icon: Zap, color: '#10b981' },
-  { metric: 'Battery Extension', value: '18x Longer', desc: 'Auto-sleep down to <50mW when idle; wakes on motion trigger', icon: BatteryCharging, color: '#3b82f6' },
+  { metric: 'Battery Extension', value: '18x Longer', desc: 'Auto-sleep down to <50mW when idle; wakes on motion trigger', icon: BatteryCharging, color: '#06b6d4' },
+  { metric: 'Compilation Speed', value: '410s / epoch', desc: '48% faster via CUDA Graph caching & VRAM pooling', icon: Cpu, color: '#3b82f6' },
   { metric: 'Hot-Swap Latency', value: '<50 ms', desc: 'Zero downtime model replacement on live edge cameras', icon: Activity, color: '#8b5cf6' },
   { metric: 'Privacy Compliance', value: '100%', desc: 'DPDP & GDPR compliant (Zero raw video transfer)', icon: ShieldCheck, color: '#ec4899' }
 ];
@@ -27,6 +28,77 @@ const Metrics = () => {
   const [activeTab, setActiveTab] = useState('convergence'); // 'convergence' | 'telemetry'
   const [selectedRoundIdx, setSelectedRoundIdx] = useState(0); // Start at Round 0 for simulation
   const [isPlaying, setIsPlaying] = useState(true); // Auto simulation toggle
+  const sliderRef = useRef(null);
+  const [telemetryIndex, setTelemetryIndex] = useState(0);
+  const [autoSlideActive, setAutoSlideActive] = useState(true);
+  const telemetryTimerRef = useRef(null);
+  const pauseTimeoutRef = useRef(null);
+
+  // Auto-slide effect for Edge Hardware Telemetry
+  useEffect(() => {
+    if (activeTab !== 'telemetry' || !autoSlideActive) return;
+
+    telemetryTimerRef.current = setInterval(() => {
+      setTelemetryIndex((prev) => {
+        const nextIndex = (prev + 1) % hardwareTelemetry.length;
+        if (sliderRef.current) {
+          const cardElement = sliderRef.current.children[nextIndex];
+          if (cardElement) {
+            sliderRef.current.scrollTo({
+              left: cardElement.offsetLeft - 20,
+              behavior: 'smooth'
+            });
+          }
+        }
+        return nextIndex;
+      });
+    }, 3000); // Slide every 3 seconds
+
+    return () => {
+      if (telemetryTimerRef.current) clearInterval(telemetryTimerRef.current);
+    };
+  }, [activeTab, autoSlideActive]);
+
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    };
+  }, []);
+
+  // Handle manual interaction: pause auto-slide, update index, and reset after 5s
+  const handleTelemetryInteraction = (action) => {
+    setAutoSlideActive(false);
+    
+    if (telemetryTimerRef.current) clearInterval(telemetryTimerRef.current);
+    if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+
+    let newIndex = telemetryIndex;
+    if (action === 'left') {
+      newIndex = Math.max(0, telemetryIndex - 1);
+    } else if (action === 'right') {
+      newIndex = (telemetryIndex + 1) % hardwareTelemetry.length;
+    } else if (typeof action === 'number') {
+      newIndex = action;
+    }
+
+    setTelemetryIndex(newIndex);
+
+    if (sliderRef.current) {
+      const cardElement = sliderRef.current.children[newIndex];
+      if (cardElement) {
+        sliderRef.current.scrollTo({
+          left: cardElement.offsetLeft - 20,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    // Resume auto-slide after 5 seconds of inactivity
+    pauseTimeoutRef.current = setTimeout(() => {
+      setAutoSlideActive(true);
+    }, 5000);
+  };
 
   // Auto-loop interval simulation
   useEffect(() => {
@@ -272,42 +344,151 @@ const Metrics = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.4 }}
-              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}
+              style={{ position: 'relative', width: '100%' }}
             >
-              {hardwareTelemetry.map((item, idx) => {
-                const IconComp = item.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="card"
-                    style={{
-                      background: 'rgba(15, 23, 42, 0.65)',
-                      backdropFilter: 'blur(12px)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      borderRadius: '16px',
-                      padding: '24px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justify: 'space-between',
-                      position: 'relative',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                      <div style={{ background: `${item.color}20`, padding: '10px', borderRadius: '12px', color: item.color }}>
-                        <IconComp size={22} />
-                      </div>
-                      <ArrowUpRight size={18} color="#64748b" />
-                    </div>
+              {/* Custom Scrollbar Styles Injected */}
+              <style>{`
+                .telemetry-slider::-webkit-scrollbar {
+                  display: none;
+                }
+                .telemetry-slider {
+                  scrollbar-width: none;
+                  -ms-overflow-style: none;
+                }
+              `}</style>
 
-                    <div>
-                      <div style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '4px', fontWeight: 500 }}>{item.metric}</div>
-                      <div style={{ fontSize: '26px', fontWeight: 700, color: '#f8fafc', marginBottom: '8px', letterSpacing: '-0.5px' }}>{item.value}</div>
-                      <p style={{ fontSize: '12px', color: '#64748b', lineHeight: '1.5', margin: 0 }}>{item.desc}</p>
+              {/* Slider Viewport */}
+              <div 
+                ref={sliderRef}
+                className="telemetry-slider"
+                style={{ 
+                  display: 'flex', 
+                  gap: '20px', 
+                  overflowX: 'auto', 
+                  scrollBehavior: 'smooth',
+                  padding: '10px 4px',
+                  scrollSnapType: 'x mandatory'
+                }}
+              >
+                {hardwareTelemetry.map((item, idx) => {
+                  const IconComp = item.icon;
+                  const isActive = telemetryIndex === idx;
+                  return (
+                    <div
+                      key={idx}
+                      onClick={() => handleTelemetryInteraction(idx)}
+                      className="card"
+                      style={{
+                        flex: '0 0 calc(25% - 15px)',
+                        minWidth: '260px',
+                        background: 'rgba(15, 23, 42, 0.65)',
+                        backdropFilter: 'blur(12px)',
+                        border: isActive ? '1px solid rgba(59, 130, 246, 0.5)' : '1px solid rgba(255, 255, 255, 0.08)',
+                        boxShadow: isActive ? '0 0 20px rgba(59, 130, 246, 0.15)' : 'none',
+                        borderRadius: '16px',
+                        padding: '24px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        scrollSnapAlign: 'start',
+                        boxSizing: 'border-box',
+                        cursor: 'pointer',
+                        transform: isActive ? 'scale(1.02)' : 'scale(1)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                        <div style={{ background: `${item.color}20`, padding: '10px', borderRadius: '12px', color: item.color }}>
+                          <IconComp size={22} />
+                        </div>
+                        <ArrowUpRight size={18} color={isActive ? '#3b82f6' : '#64748b'} style={{ transition: 'color 0.3s' }} />
+                      </div>
+
+                      <div>
+                        <div style={{ fontSize: '13px', color: isActive ? '#93c5fd' : '#94a3b8', marginBottom: '4px', fontWeight: 500, transition: 'color 0.3s' }}>{item.metric}</div>
+                        <div style={{ fontSize: '26px', fontWeight: 700, color: '#f8fafc', marginBottom: '8px', letterSpacing: '-0.5px' }}>{item.value}</div>
+                        <p style={{ fontSize: '12px', color: isActive ? '#94a3b8' : '#64748b', lineHeight: '1.5', margin: 0, transition: 'color 0.3s' }}>{item.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={() => handleTelemetryInteraction('left')}
+                aria-label="Scroll Left"
+                style={{
+                  position: 'absolute',
+                  left: '-18px',
+                  top: 'calc(50% - 30px)',
+                  zIndex: 10,
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#f8fafc',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.borderColor = '#3b82f6'; }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={() => handleTelemetryInteraction('right')}
+                aria-label="Scroll Right"
+                style={{
+                  position: 'absolute',
+                  right: '-18px',
+                  top: 'calc(50% - 30px)',
+                  zIndex: 10,
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#f8fafc',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.borderColor = '#3b82f6'; }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; }}
+              >
+                <ChevronRight size={20} />
+              </button>
+
+              {/* Dot Indicators */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+                {hardwareTelemetry.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleTelemetryInteraction(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                    style={{
+                      width: telemetryIndex === idx ? '24px' : '8px',
+                      height: '8px',
+                      borderRadius: '4px',
+                      background: telemetryIndex === idx ? '#3b82f6' : 'rgba(255, 255, 255, 0.2)',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                  />
+                ))}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
