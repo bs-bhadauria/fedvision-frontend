@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Cpu, ShieldCheck, Zap, BarChart3, HardDrive, ArrowUpRight, Play, Pause, RotateCcw } from 'lucide-react';
+import { Activity, Cpu, ShieldCheck, Zap, BarChart3, HardDrive, ArrowUpRight, Play, Pause, RotateCcw, BatteryCharging } from 'lucide-react';
 
 const benchmarkRoundsData = [
   { round: 0, label: 'Round 0 (Initial)', mAP: 99.71, precision: 91.24, recall: 99.13, time: 1.05, status: 'Initial Baseline' },
@@ -18,7 +18,7 @@ const benchmarkRoundsData = [
 
 const hardwareTelemetry = [
   { metric: 'Bandwidth Saved', value: '99.96%', desc: '10MB weights vs continuous 4K video stream', icon: Zap, color: '#10b981' },
-  { metric: 'Compilation Speed', value: '410s / epoch', desc: '48% faster via CUDA Graph caching & VRAM pooling', icon: Cpu, color: '#3b82f6' },
+  { metric: 'Battery Extension', value: '18x Longer', desc: 'Auto-sleep down to <50mW when idle; wakes on motion trigger', icon: BatteryCharging, color: '#3b82f6' },
   { metric: 'Hot-Swap Latency', value: '<50 ms', desc: 'Zero downtime model replacement on live edge cameras', icon: Activity, color: '#8b5cf6' },
   { metric: 'Privacy Compliance', value: '100%', desc: 'DPDP & GDPR compliant (Zero raw video transfer)', icon: ShieldCheck, color: '#ec4899' }
 ];

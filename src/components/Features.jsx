@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 // Humne premium Lucide icons import kar liye hain
-import { ShieldCheck, Banknote, Radio, WifiOff, BrainCircuit, PlugZap } from 'lucide-react';
+import { ShieldCheck, Banknote, Radio, BrainCircuit, PlugZap, Power } from 'lucide-react';
 
 const Features = () => {
   // Scroll animation variants
@@ -36,9 +36,9 @@ const Features = () => {
       desc: "Designed to exploit high-speed, private 5G network slices. Exchanging lightweight weights (~10MB) preserves precious network bandwidth." 
     },
     { 
-      icon: <WifiOff size={22} color="#ef4444" />, 
-      title: "Offline Autonomy", 
-      desc: "If the network drops, cameras continue object detection locally at the edge. No single point of failure ensures high operational resilience." 
+      icon: <Power size={22} color="#ef4444" />, 
+      title: "Wake-on-Motion (Smart Sleep)", 
+      desc: "Edge devices enter low-power deep sleep (<50mW) when idle. Detection wakes up instantly in VRAM upon motion trigger, extending battery life by 18x on wireless edge cameras." 
     },
     { 
       icon: <BrainCircuit size={22} color="#f59e0b" />, 
