@@ -11,6 +11,8 @@
   --pitch-shadow: 0 24px 80px rgba(3, 8, 18, 0.45);
   position: relative;
   overflow: hidden;
+  overflow-x: hidden;
+  max-width: 100vw;
   background:
     radial-gradient(circle at top left, rgba(34, 211, 238, 0.16), transparent 32%),
     radial-gradient(circle at 85% 12%, rgba(96, 165, 250, 0.22), transparent 26%),
@@ -957,7 +959,7 @@
   }
 
   .pitch-sidebar-links {
-    grid-template-columns: repeat(4, minmax(10rem, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .pitch-roadmap {
@@ -1017,6 +1019,10 @@
   .pitch-hero-title {
     max-width: 100%;
     font-size: 2.75rem;
+  }
+
+  .pitch-sidebar-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .pitch-scene-frame,
