@@ -3,6 +3,40 @@ const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const { z } = require('zod');
+const https = require('https');
+
+// Helper function to send https POST requests (compatible with all Node versions)
+const sendWeb3Form = (data) => {
+    return new Promise((resolve, reject) => {
+        const postData = JSON.stringify(data);
+        
+        const options = {
+            hostname: 'api.web3forms.com',
+            port: 443,
+            path: '/submit',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(postData)
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let responseBody = '';
+            res.on('data', (chunk) => { responseBody += chunk; });
+            res.on('end', () => {
+                resolve({ statusCode: res.statusCode, body: responseBody });
+            });
+        });
+
+        req.on('error', (e) => {
+            reject(e);
+        });
+
+        req.write(postData);
+        req.end();
+    });
+};
 
 const app = express();
 const PORT = 5000;
@@ -65,33 +99,29 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
         // 1. Check and sanitize incoming data
         const validatedData = contactSchema.parse(req.body);
 
-        // 2. Here you securely forward data to Web3Forms using fetch from the BACKEND
-        // (This keeps your API Key hidden from the browser)
-        const accessKey = "e1081c39-fc20-410e-96f7-5bf652ae790d"; // Moved here from frontend
+        // 2. Securely forward data to Web3Forms using native HTTPS (Node compatible)
+        const accessKey = "e1081c39-fc20-410e-96f7-5bf652ae790d";
         
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                access_key: accessKey,
-                name: validatedData.name,
-                organization: validatedData.org,
-                email: validatedData.email,
-                phone: validatedData.phone,
-                message: validatedData.message,
-                subject: "New FedVision Pilot Request (Verified)"
-            })
+        const result = await sendWeb3Form({
+            access_key: accessKey,
+            name: validatedData.name,
+            organization: validatedData.org,
+            email: validatedData.email,
+            phone: validatedData.phone,
+            message: validatedData.message,
+            subject: "New FedVision Pilot Request (Verified)"
         });
 
-        const json = await response.json();
+        const isSuccess = result.statusCode >= 200 && result.statusCode < 300;
 
-        if (response.status === 200) {
+        if (!isSuccess) {
+            console.error("Web3Forms API Error:", result.statusCode, result.body);
+        }
+
+        if (isSuccess) {
             res.status(200).json({ success: true, message: "Request received securely!" });
         } else {
-            res.status(500).json({ success: false, message: "Third-party API error." });
+            res.status(500).json({ success: false, message: `Third-party API error: ${result.body}` });
         }
 
     } catch (error) {

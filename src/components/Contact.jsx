@@ -15,24 +15,35 @@ const Contact = () => {
     setStatus('submitting');
 
     try {
-      // Ab hum request apne SECURE BACKEND par bhej rahe hain, Web3Forms par directly nahi.
-      const response = await fetch("https://fedvision-backend.onrender.com/api/contact", {
+      // Direct Web3Forms submission from the client side (Free tier requirement)
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          access_key: "e1081c39-fc20-410e-96f7-5bf652ae790d",
+          name: formData.name,
+          organization: formData.org,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          subject: "New FedVision Pilot Request (Direct)"
+        })
       });
 
       const json = await response.json();
       
-      if (response.status === 200) {
+      if (response.success || response.status === 200 || json.success) {
         setStatus('success');
       } else {
-        alert(json.message || "Failed to send message. Validation failed.");
+        alert(json.message || "Failed to send message.");
         setStatus('error');
       }
     } catch (error) {
       console.error("Submission Error:", error);
-      alert("Network error. Backend server might be offline.");
+      alert("Network error. Please check your internet connection.");
       setStatus('error');
     }
   };
