@@ -16,10 +16,17 @@ app.use(helmet());
 // ==========================================
 // 🛡️ LAYER 2: CORS RESTRICTION
 // ==========================================
-// Sirf aapke React frontend (localhost:5173) ko is server se baat karne ki permission dega.
+// Sirf aapke React frontend ko is server se baat karne ki permission dega.
 app.use(cors({
-    origin: 'http://localhost:5173', 
-    methods: ['POST'],
+    origin: (origin, callback) => {
+        const allowedOrigins = ['http://localhost:5173', 'https://fedvision-frontend.vercel.app'];
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['POST', 'OPTIONS'],
 }));
 
 // ==========================================
