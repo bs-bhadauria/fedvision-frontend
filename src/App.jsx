@@ -71,11 +71,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      scrollToHashTarget(activeHash);
-    });
+    // If we transition pages, wait for React virtual DOM to commit nodes before scrolling
+    const delay = activeHash && activeHash !== `#${PITCH_DECK_PREFIX}` ? 150 : 0;
 
-    return () => window.cancelAnimationFrame(frame);
+    const timer = setTimeout(() => {
+      scrollToHashTarget(activeHash);
+    }, delay);
+
+    return () => clearTimeout(timer);
   }, [activeHash, activePage]);
 
   const updateHash = (nextHash = '') => {
@@ -87,10 +90,12 @@ function App() {
         : `${window.location.pathname}${window.location.search}`;
 
       window.history.pushState({}, '', nextUrl);
+      setActiveHash(hash);
+      setActivePage(getPageFromHash(hash));
+    } else {
+      // If hash is already the same, trigger scroll directly since state change won't execute useEffect
+      scrollToHashTarget(hash);
     }
-
-    setActiveHash(hash);
-    setActivePage(getPageFromHash(hash));
   };
 
   const handleLandingNavigation = (sectionId = '') => {
