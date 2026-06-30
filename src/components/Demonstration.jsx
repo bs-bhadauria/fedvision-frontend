@@ -32,7 +32,7 @@ const Demonstration = () => {
                     src="/videos/working-demo.mp4" 
                     controls 
                     preload="metadata"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                  >
                     Your browser does not support the video tag.
                  </video>
@@ -58,7 +58,7 @@ const Demonstration = () => {
                     src="/videos/inferencing-demo.mp4" 
                     controls 
                     preload="metadata"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                  >
                     Your browser does not support the video tag.
                  </video>
